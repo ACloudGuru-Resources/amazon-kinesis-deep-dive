@@ -442,57 +442,6 @@ Resources:
               - kinesisanalytics:StartApplication
              Resource: !Join [ ":" , ["arn:aws:kinesisanalytics",!Ref AWS::Region,!Ref AWS::AccountId,"application/KDA-studio-*" ] ]
 
-#Start KDA Application
-  StartKDA:
-    Type: "Custom::StartKDA"
-    Properties:
-      ServiceToken: !GetAtt StartKDALambdaFunction.Arn
-      ApplicationName: !Sub 'KDA-studio-1-${AWS::StackName}'
-    DependsOn: KinesisAnalyticsStudio
-
-#Admin password for OpenSearch Instance
-  OpenSearchPassword:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      GenerateSecretString:
-        SecretStringTemplate: '{"username": "admin"}'
-        GenerateStringKey: password
-        PasswordLength: 16
-        ExcludeCharacters: "\"@/\\"
-
-#OpenSearch Instance
-  OpenSearchInstance:
-    Type: AWS::OpenSearchService::Domain
-    Properties:
-      DomainName: "os-domain"
-      EngineVersion: 'OpenSearch_1.0'
-      ClusterConfig:
-        InstanceCount: 1
-        InstanceType: t3.medium.search
-      AccessPolicies:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: 'Allow'
-            Principal:
-              AWS: '*'
-            Action: 'es:*'
-            Resource: !Sub "arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/os-domain/*"
-      AdvancedSecurityOptions:
-        Enabled: true
-        InternalUserDatabaseEnabled: true
-        MasterUserOptions:
-          MasterUserName: !Sub "{{resolve:secretsmanager:${OpenSearchPassword}::username}}"
-          MasterUserPassword: !Sub "{{resolve:secretsmanager:${OpenSearchPassword}::password}}"
-      NodeToNodeEncryptionOptions:
-        Enabled: true
-      EncryptionAtRestOptions:
-        Enabled: true
-      DomainEndpointOptions:
-        EnforceHTTPS: true
-      EBSOptions:
-        EBSEnabled: true
-        VolumeSize: 10
-        VolumeType: gp2
 
 #Outputs will go here
 Outputs:
@@ -518,6 +467,3 @@ Outputs:
   KinesisAnalyticsStudio:
     Description: Kinesis Analytics Studio
     Value: !Ref KinesisAnalyticsStudio
-  OpenSearchSecretsManagerReference:
-    Description: OpenSearch credentials are stored in secrets manager
-    Value: !Select [6, !Split [":", !Ref OpenSearchPassword ]]
