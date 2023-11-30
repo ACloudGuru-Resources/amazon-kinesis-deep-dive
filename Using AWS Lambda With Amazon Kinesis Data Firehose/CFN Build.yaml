@@ -140,7 +140,7 @@ Resources:
     Properties:
       AutomaticStopTimeMinutes: 30
       Description: Real Time Streaming with Amazon Kinesis Cloud9 IDE 
-      InstanceType: m5.large
+      InstanceType: t3.micro
       Name: !Sub "KinesisRealTimeStreaming-${AWS::StackName}"
       SubnetId: !Ref PublicSubnet1
       ImageId: amazonlinux-2-x86_64
