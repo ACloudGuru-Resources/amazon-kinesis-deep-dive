@@ -35,7 +35,7 @@ Parameters:
   EEAssetsBucket:
     Description: "Region-specific assets S3 bucket name (e.g. ee-assets-prod-us-east-1)"
     Type: String
-    Default: "ee-assets-prod-us-east-1"
+    Default: "ee-cr-assets-prod-us-east-1"
   EEAssetsKeyPrefix:
     Description: "S3 key prefix where this modules assets are stored. (e.g. modules/my_module/v1/)"
     Type: String
