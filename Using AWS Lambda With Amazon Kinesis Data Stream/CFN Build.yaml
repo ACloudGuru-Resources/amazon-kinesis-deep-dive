@@ -264,7 +264,8 @@ Resources:
     Properties: 
       ApplicationName: !Sub 'KDA-studio-1-${AWS::StackName}'
       ApplicationDescription: Kinesis Flink Sql Demo
-      RuntimeEnvironment: ZEPPELIN-FLINK-2_0
+      # FIX: Updated deprecated ZEPPELIN-FLINK-2_0 to ZEPPELIN-FLINK-3_0
+      RuntimeEnvironment: ZEPPELIN-FLINK-3_0
       ApplicationMode: INTERACTIVE
       ServiceExecutionRole: !GetAtt 'KinesisAnalyticsRole.Arn'
       ApplicationConfiguration:
@@ -281,23 +282,12 @@ Resources:
             - ArtifactType: DEPENDENCY_JAR
               MavenReference:
                 GroupId: org.apache.flink
-                ArtifactId: flink-sql-connector-kinesis_2.12
-                Version: 1.13.2
-            - ArtifactType: DEPENDENCY_JAR
-              MavenReference:
-                GroupId: org.apache.flink
-                ArtifactId: flink-connector-kafka_2.12
-                Version: 1.13.2
-            - ArtifactType: DEPENDENCY_JAR
-              MavenReference:
-                GroupId: software.amazon.msk
-                ArtifactId: aws-msk-iam-auth
-                Version: 1.1.0
+                ArtifactId: flink-sql-connector-kinesis
+                Version: 1.15.4
             - ArtifactType: DEPENDENCY_JAR
               S3ContentLocation:
                 BucketARN: !Sub 'arn:aws:s3:::${EEAssetsBucket}'
                 FileKey: !Sub '${EEAssetsKeyPrefix}flink-sql-connector-elasticsearch7_2.11-1.13.2.jar'
-
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
