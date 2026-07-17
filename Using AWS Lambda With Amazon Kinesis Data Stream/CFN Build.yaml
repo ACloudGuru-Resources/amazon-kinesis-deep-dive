@@ -143,7 +143,7 @@ Resources:
       InstanceType: t3.micro
       Name: !Sub "KinesisRealTimeStreaming-${AWS::StackName}"
       SubnetId: !Ref PublicSubnet1
-      ImageId: amazonlinux-2-x86_64
+      ImageId: amazonlinux-2023-x86_64
 
 #Glue database
   Database:
@@ -264,7 +264,7 @@ Resources:
     Properties: 
       ApplicationName: !Sub 'KDA-studio-1-${AWS::StackName}'
       ApplicationDescription: Kinesis Flink Sql Demo
-      RuntimeEnvironment: ZEPPELIN-FLINK-2_0
+      RuntimeEnvironment: ZEPPELIN-FLINK-3_0
       ApplicationMode: INTERACTIVE
       ServiceExecutionRole: !GetAtt 'KinesisAnalyticsRole.Arn'
       ApplicationConfiguration:
